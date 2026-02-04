@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    environment: prod
+    project: smartshop
+
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: testing
+  labels:
+    environment: test
+    project: smartshop
+
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: readonly
+  labels:
+    environment: readonly
+    project: smartshop
