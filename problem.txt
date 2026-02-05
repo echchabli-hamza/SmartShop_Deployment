@@ -1,0 +1,39 @@
+sudo chown -R 999:999 /home/hamza/dataPV
+sudo chmod 755 /home/hamza/dataPV
+
+i used these command for presisnt data i link /home/hamza/dataPV witht he kind controler-panle folder :
+/tmp/k8s-postgres  
+
+and then mount the same folder with postgres-0 pod folder /tmp/k8s-postgres
+
+
+
+
+i used also (to sove many files : issues in db connection) this solution is not permanent goes when rebooting the pc :
+sudo sysctl -w fs.inotify.max_user_watches=524288
+sudo sysctl -w fs.inotify.max_user_instances=512
+sudo sysctl -w fs.file-max=2097152
+
+
+this one is permanent : 
+
+
+sudo tee /etc/sysctl.d/99-kind.conf <<EOF
+fs.inotify.max_user_watches = 524288
+fs.inotify.max_user_instances = 512
+fs.file-max = 2097152
+EOF
+
+sudo sysctl --system
+
+
+
+these command can be used to solve the same problem but its more conplex :
+ulimit -n
+
+# Increase for current session only
+ulimit -n 65536
+
+# View all current sysctl settings
+sysctl -a | grep inotify
+sysctl -a | grep file-max

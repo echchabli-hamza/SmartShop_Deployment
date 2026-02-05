@@ -1,12 +1,11 @@
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: smartshop
+  namespace: production
 spec:
-  serviceName: postgres
-  replicas: 1               
+  serviceName: postgres-service
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -15,9 +14,14 @@ spec:
       labels:
         app: postgres
     spec:
+      securityContext:
+        fsGroup: 999  
       containers:
       - name: postgres
-        image: postgres:15-alpine
+        image: postgres:15
+        securityContext:
+          runAsUser: 999  
+          runAsGroup: 999
         env:
         - name: POSTGRES_DB
           value: smartshop_db
@@ -31,12 +35,19 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata  
         ports:
         - containerPort: 5432
         volumeMounts:
-        - name: data
+        - name: postgres-data  
           mountPath: /var/lib/postgresql/data
-      volumes:                  
-      - name: data
-        persistentVolumeClaim:   
-          claimName: postgres-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data  
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 20Gi
