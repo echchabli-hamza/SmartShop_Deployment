@@ -18,7 +18,19 @@ spec:
         image: echchablihamza/smartimage:latest 
         ports:
         - containerPort: 7001 
-        env:      
+        env:
+
+        # - name: SPRING_PROFILES_ACTIVE
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: backend-config
+        #       key: SPRING_PROFILES_ACTIVE
+        # - name: LOG_LEVEL
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: backend-config
+        #       key: LOG_LEVEL
+      
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
