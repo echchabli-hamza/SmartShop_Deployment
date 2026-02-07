@@ -5,4 +5,22 @@ nodes:
 - role: control-plane
   extraMounts:
   - hostPath: /home/hamza/dataPV
-    containerPath: /tmp/k8s-postgres   
+    containerPath: /tmp/k8s-postgres
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 8088
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 8443
+    protocol: TCP
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+
+#kind create cluster --config kind-config.yaml --name smartshop
+
+
+

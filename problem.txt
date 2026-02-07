@@ -37,3 +37,7 @@ ulimit -n 65536
 # View all current sysctl settings
 sysctl -a | grep inotify
 sysctl -a | grep file-max
+
+
+
+
